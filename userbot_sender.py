@@ -1,11 +1,14 @@
 import asyncio
 from telethon import TelegramClient
+from telethon.sessions import StringSession
 from telethon.errors import FloodWaitError
 
 API_ID = 30687248
 API_HASH = "7dba2dedb27be41e1bf04c583f96eaf9"
 
-# Guruhlar ro'yxati (private havola bilan birga)
+# Terminaldan olingan sessiya matni
+SESSION_STRING = "1ApWapzMBu57a3VtJCTb6DEV2jk1o_TRXPFCgNeuMePfbDZR8vKoCSBrIsm4xRoLKtRqStLNzbUfJ-Kg0B_kKxnletN3_SQUXVNQiHfy8YDKQMkjjPvEOT9_vjKtptxlnzfjwH_zmFyEJp0qehtTUq3vfdLdZJ421TjGp7iXiG-miKIVduuhu0y1GFF5BZxhNeiHTp-pxQqQm9yYdAw s_4Zj0l1CzZFPiohVPhV-QUkp1un1CZH5osCsaBv0jD2IV4dcS6h7QoeYi2VdTyGKcGeRwIZJItCuagSXcXbw0oRaIq0niz66jsvxQz340jofNnZyzrIN6HkJdrOM8NX2LR1m3xVujs6A="
+
 GROUPS = [
     "turk_forum",
     "instagram_akaunt_savdo_chati",
@@ -30,22 +33,20 @@ Sen ham o‘z shaxsiy botingni yarat:
 Hech qanday to‘lovsiz, shunchaki kir va botingni ol 👇  
 👉 @abubakrbuilderbot"""
 
-# Guruhlar orasidagi kutish (soniya)
 DELAY_BETWEEN = 15
-
-# Davra tugagach keyingi aylanmagacha kutish (soniya)
 INTERVAL_AFTER_ALL = 60
 
-client = TelegramClient("user_session", API_ID, API_HASH)
+# Bo'sh joylarni tozalab sessiyani ulaymiz
+clean_session = SESSION_STRING.replace(" ", "").strip()
+client = TelegramClient(StringSession(clean_session), API_ID, API_HASH)
 
 async def main():
     await client.start()
-    print("Userbot ishga tushdi!")
+    print("Userbot Render'da muvaffaqiyatli ishga tushdi!")
 
     while True:
         for group in GROUPS:
             try:
-                # Private guruh havolasi bo'lsa entity qilib oladi
                 if "+" in group or "joinchat" in group:
                     entity = await client.get_entity(group)
                 else:
@@ -61,7 +62,7 @@ async def main():
 
             await asyncio.sleep(DELAY_BETWEEN)
 
-        print(f"Barcha guruhlarga yuborildi. {INTERVAL_AFTER_ALL} soniya kutilyapti...")
+        print(f"Barcha guruhlarga yuborildi. {INTERVAL_AFTER_ALL} soniya kutilmoqda...")
         await asyncio.sleep(INTERVAL_AFTER_ALL)
 
 if __name__ == "__main__":
